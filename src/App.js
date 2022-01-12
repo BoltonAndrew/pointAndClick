@@ -1,25 +1,52 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import styled from "styled-components";
+import "./App.css";
+import { sceneArr } from "./utils/scene";
 
-function App() {
+const App = () => {
+  const [collision, setCollision] = useState(sceneArr);
+
+  const interaction = (i) => {
+    alert(collision[i].description);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Scene>
+        {collision.map((box, i) => {
+          return (
+            <Box
+              key={i}
+              image={box.imageUrl}
+              onClick={(e) => {
+                e.preventDefault();
+                interaction(i);
+              }}
+            />
+          );
+        })}
+      </Scene>
     </div>
   );
-}
+};
+
+const Scene = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  background-image: url("./assets/casinoScene.jpg");
+  background-repeat: no-repeat;
+  background-size: 100vw;
+  width: 100vw;
+  height: 100vh;
+`;
+
+const Box = styled.div`
+  background-color: ${(props) => (props.image ? null : "transparent")};
+  background-image: url(${(props) => (props.image ? props.image : null)});
+  background-size: 60%;
+  background-repeat: no-repeat;
+  width: 10%;
+`;
 
 export default App;
