@@ -5,8 +5,9 @@ import { sceneArr } from "./utils/scene";
 
 const App = () => {
   const [collision, setCollision] = useState(sceneArr);
-  const [position, setPosition] = useState(5);
-  const [walk, setWalk] = useState(true);
+  const [position, setPosition] = useState(15);
+  const [destination, setDestination] = useState(95);
+  const [walk, setWalk] = useState(false);
 
   const interaction = (e, i) => {
     console.log(e.detail);
@@ -21,7 +22,12 @@ const App = () => {
   };
 
   const rightClick = (e) => {
-    // e.preventDefault();
+    e.preventDefault();
+    setWalk(true);
+    setTimeout(() => {
+      setWalk(false)
+      setPosition(destination)
+    }, 4600);
     // alert("move");
   };
 
@@ -44,7 +50,7 @@ const App = () => {
         <Character
           position={position}
           walk={walk}
-          num={{ start: position, end: 10 }}
+          num={{ start: position, end: destination }}
         />
       </Scene>
     </div>
@@ -96,12 +102,9 @@ const Character = styled.div`
   background-size: 1430%;
   background-position-x: 0%;
   top: 32vw;
-  left: 10vw;
-  animation: ${(props) => (props.walk ? WalkAnimation : null)},
-    ${(props) => (props.walk ? DirectionAnimation(props.num) : null)};
-  animation-duration: 0.6s;
-  animation-iteration-count: 4;
-  animation-timing-function: steps(6);
+  left: ${props => props.position}vw;
+  animation: ${(props) => (props.walk ? WalkAnimation : null)} 0.6s steps(6) infinite,
+    ${(props) => (props.walk ? DirectionAnimation(props.num) : null)} 4.6s steps(30) 1;
 `;
 
 export default App;
