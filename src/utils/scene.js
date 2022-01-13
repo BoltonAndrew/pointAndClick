@@ -383,6 +383,7 @@ export const sceneArr = [
     item: false,
     move: true,
     imageUrl: "",
+    location: 10,
   },
   {
     tile: 56,
