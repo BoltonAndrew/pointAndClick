@@ -1,27 +1,28 @@
 import React, { useState } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import "./App.css";
 import { sceneArr } from "./utils/scene";
 
 const App = () => {
   const [collision, setCollision] = useState(sceneArr);
   const [position, setPosition] = useState(5);
-  const [walk, setWalk] = useState(false);
+  const [walk, setWalk] = useState(true);
 
   const interaction = (e, i) => {
     console.log(e.detail);
     if (e.detail === 2) {
-      // alert(collision[i].description);
       if (collision[i].description !== "Nothing there") {
         const sound = new Audio("./assets/sound.wav");
         sound.play();
+      } else {
+        alert(collision[i].description);
       }
     }
   };
 
   const rightClick = (e) => {
-    e.preventDefault();
-    alert("move");
+    // e.preventDefault();
+    // alert("move");
   };
 
   return (
@@ -40,7 +41,11 @@ const App = () => {
             />
           );
         })}
-        <Character position={position} />
+        <Character
+          position={position}
+          walk={walk}
+          num={{ start: position, end: 10 }}
+        />
       </Scene>
     </div>
   );
@@ -67,6 +72,22 @@ const Box = styled.div`
   width: 10%;
 `;
 
+const WalkAnimation = keyframes`
+  from {
+    background-position-x: 8%;
+  } to {
+    background-position-x: 54%;
+  }
+`;
+
+const DirectionAnimation = (y) => keyframes`
+  from {
+    left: ${y.start}vw;
+  } to {
+    left: ${y.end}vw;
+  }
+`;
+
 const Character = styled.div`
   background-image: url("./assets/sprite.png");
   position: absolute;
@@ -75,7 +96,12 @@ const Character = styled.div`
   background-size: 1430%;
   background-position-x: 0%;
   top: 32vw;
-  left: 5vw;
+  left: 10vw;
+  animation: ${(props) => (props.walk ? WalkAnimation : null)},
+    ${(props) => (props.walk ? DirectionAnimation(props.num) : null)};
+  animation-duration: 0.6s;
+  animation-iteration-count: 4;
+  animation-timing-function: steps(6);
 `;
 
 export default App;
