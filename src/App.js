@@ -5,8 +5,14 @@ import { sceneArr } from "./utils/scene";
 
 const App = () => {
   const [collision, setCollision] = useState(sceneArr);
-  const [position, setPosition] = useState(15);
-  const [destination, setDestination] = useState(95);
+  const [xPosition, setXPosition] = useState(32);
+  const [yPosition, setYPosition] = useState(5);
+  const [xDestination, setXDestination] = useState();
+  const [yDestination, setYDestination] = useState();
+  const [speed, setSpeed] = useState(0.6);
+  const [steps, setSteps] = useState(20);
+  const [direction, setDirection] = useState("right");
+  const [tile, setTile] = useState(1);
   const [walk, setWalk] = useState(false);
 
   const interaction = (e, i) => {
@@ -21,13 +27,41 @@ const App = () => {
     }
   };
 
-  const rightClick = (e) => {
+  const rightClick = async (e, box) => {
     e.preventDefault();
+
+    // setDifference(tempNum);
+    // console.log(difference);
+    // setSpeed({ speed: 0.6 * difference, steps: 20 * difference });
+    if (yPosition > box.yLocation) {
+      setDirection("left");
+    } else {
+      setDirection("right");
+    }
+    let tempNum;
+    if (yPosition > box.yLocation) {
+      tempNum = tile - box.tile;
+    } else {
+      tempNum = box.tile - tile;
+    }
+    console.log(tempNum);
+    const tempSpeed = 0.6 * tempNum;
+    const tempSteps = 20 * tempNum;
+    setSpeed(tempSpeed);
+    setSteps(tempSteps);
+    setXDestination(box.xLocation);
+    setYDestination(box.yLocation);
     setWalk(true);
+    setTile(box.tile);
     setTimeout(() => {
-      setWalk(false)
-      setPosition(destination)
-    }, 4600);
+      setWalk(false);
+      setXPosition(box.xLocation);
+      setYPosition(box.yLocation);
+      setSpeed(0.6);
+      setSteps(20);
+      setXDestination();
+      setYDestination();
+    }, 600 * tempNum - 20);
     // alert("move");
   };
 
@@ -43,14 +77,19 @@ const App = () => {
                 e.preventDefault();
                 interaction(e, i);
               }}
-              onContextMenu={rightClick}
+              onContextMenu={(e) => rightClick(e, box)}
             />
           );
         })}
         <Character
-          position={position}
+          xPosition={xPosition}
+          yPosition={yPosition}
           walk={walk}
-          num={{ start: position, end: destination }}
+          x={{ start: xPosition, end: xDestination }}
+          y={{ start: yPosition, end: yDestination }}
+          speed={speed}
+          steps={steps}
+          direction={direction}
         />
       </Scene>
     </div>
@@ -86,11 +125,13 @@ const WalkAnimation = keyframes`
   }
 `;
 
-const DirectionAnimation = (y) => keyframes`
+const DirectionAnimation = (x, y) => keyframes`
   from {
     left: ${y.start}vw;
+    top: ${x.start}vw;
   } to {
     left: ${y.end}vw;
+    top: ${x.end}vw;
   }
 `;
 
@@ -101,10 +142,13 @@ const Character = styled.div`
   width: 10vw;
   background-size: 1430%;
   background-position-x: 0%;
-  top: 32vw;
-  left: ${props => props.position}vw;
-  animation: ${(props) => (props.walk ? WalkAnimation : null)} 0.6s steps(6) infinite,
-    ${(props) => (props.walk ? DirectionAnimation(props.num) : null)} 4.6s steps(30) 1;
+  top: ${(props) => props.xPosition}vw;
+  left: ${(props) => props.yPosition}vw;
+  animation: ${(props) => (props.walk ? WalkAnimation : null)} 0.6s steps(6)
+      infinite,
+    ${(props) => (props.walk ? DirectionAnimation(props.x, props.y) : null)}
+      ${(props) => props.speed}s steps(140) 1;
+  transform: ${(props) => (props.direction === "left" ? "scaleX(-1)" : null)};
 `;
 
 export default App;

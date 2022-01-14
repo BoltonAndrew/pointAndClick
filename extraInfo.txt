@@ -1,1 +1,3 @@
 sprite %'s 0,8,15,23,31,38,46
+20 steps per block moved l/r
+0.6 seconds per block moved l/r
