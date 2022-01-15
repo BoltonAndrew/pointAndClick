@@ -1,0 +1,8 @@
+text box
+inventory
+picking up items mechanics
+item interactions
+initial walk into scene animation
+scene change mechanics
+Checking character location before interactions (scene change, item interaction, talking);
+Storyline

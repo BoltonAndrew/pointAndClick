@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled, { keyframes } from "styled-components";
 import "./App.css";
-import { sceneArr } from "./utils/scene";
+import { sceneArr } from "./scenes/scene";
 
 const App = () => {
   const [collision, setCollision] = useState(sceneArr);
@@ -101,6 +101,7 @@ const App = () => {
 
 const Scene = styled.div`
   display: flex;
+  text-align: center;
   flex-direction: row;
   flex-wrap: wrap;
   background-image: url("./assets/casinoScene.jpg");
@@ -156,8 +157,9 @@ const Character = styled.div`
 
 const TextBox = styled.p`
   position: absolute;
+  width: 100%;
+  text-align: center;
   color: white;
-  left: 50vw;
   top: 40vw;
 `;
 
