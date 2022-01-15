@@ -505,7 +505,7 @@ export const sceneArr = [
   },
   {
     tile: 6,
-    description: "A newspaper",
+    description: "It's a newspaper",
     item: true,
     move: true,
     imageUrl: "./assets/newspaper.png",

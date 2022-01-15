@@ -14,13 +14,18 @@ const App = () => {
   const [direction, setDirection] = useState("right");
   const [tile, setTile] = useState(1);
   const [walk, setWalk] = useState(false);
+  const [description, setDescription] = useState();
 
   const interaction = (e, i) => {
     console.log(e.detail);
     if (e.detail === 2) {
       if (collision[i].description !== "Nothing there") {
         const sound = new Audio("./assets/sound.wav");
+        setDescription(collision[i].description);
         sound.play();
+        setTimeout(() => {
+          setDescription();
+        }, 1000);
       } else {
         alert(collision[i].description);
       }
@@ -88,6 +93,7 @@ const App = () => {
           steps={steps}
           direction={direction}
         />
+        <TextBox>{description}</TextBox>
       </Scene>
     </div>
   );
@@ -146,6 +152,13 @@ const Character = styled.div`
     ${(props) => (props.walk ? DirectionAnimation(props.x, props.y) : null)}
       ${(props) => props.speed}s steps(140) 1;
   transform: ${(props) => (props.direction === "left" ? "scaleX(-1)" : null)};
+`;
+
+const TextBox = styled.p`
+  position: absolute;
+  color: white;
+  left: 50vw;
+  top: 40vw;
 `;
 
 export default App;
