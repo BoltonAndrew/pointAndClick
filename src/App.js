@@ -4,6 +4,7 @@ import { sceneArr } from "./scenes/scene";
 import { Inventory } from "./components/inventory";
 
 const App = () => {
+  const [heldItem, setHeldItem] = useState();
   const [modalOpen, setModalOpen] = useState(false);
   const [collision, setCollision] = useState(sceneArr);
   const [xPosition, setXPosition] = useState(32);
@@ -19,16 +20,25 @@ const App = () => {
 
   const interaction = (e, i) => {
     console.log(e.detail);
-    if (e.detail === 2) {
-      if (collision[i].description !== "Nothing there") {
+    if (e.detail === 2 && collision[i].item) {
+      if (
+        tile === collision[i].tile ||
+        tile === collision[i].tile + 1 ||
+        tile === collision[i].tile - 1
+      ) {
+        setHeldItem(collision[i].imageUrl);
+        const tempArr = collision;
+        tempArr[i].item = false;
+        tempArr[i].imageUrl = "";
+        tempArr[i].description = "Nothing there";
+        setCollision(tempArr);
+      } else {
         const sound = new Audio("./assets/sound.wav");
         setDescription(collision[i].description);
         sound.play();
         setTimeout(() => {
           setDescription();
         }, 1000);
-      } else {
-        alert(collision[i].description);
       }
     }
   };
@@ -70,7 +80,7 @@ const App = () => {
 
   return (
     <div className="App">
-      <Scene>
+      <Scene heldItem={heldItem}>
         {collision.map((box, i) => {
           return (
             <Box
@@ -98,7 +108,12 @@ const App = () => {
             setModalOpen(!modalOpen);
           }}
         />
-        <Inventory modalOpen={modalOpen} setModalOpen={setModalOpen} />
+        <Inventory
+          modalOpen={modalOpen}
+          setModalOpen={setModalOpen}
+          heldItem={heldItem}
+          setHeldItem={setHeldItem}
+        />
         <TextBox>{description}</TextBox>
       </Scene>
     </div>
@@ -115,6 +130,8 @@ const Scene = styled.div`
   background-size: cover;
   width: 100vw;
   height: 50vw;
+  cursor: url(${(props) => (props.heldItem ? "./assets/newspaper.svg" : null)}),
+    auto;
 `;
 
 const Box = styled.div`
