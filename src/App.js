@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import styled, { keyframes } from "styled-components";
-import "./App.css";
 import { sceneArr } from "./scenes/scene";
+import { Inventory } from "./components/inventory";
 
 const App = () => {
+  const [modalOpen, setModalOpen] = useState(false);
   const [collision, setCollision] = useState(sceneArr);
   const [xPosition, setXPosition] = useState(32);
   const [yPosition, setYPosition] = useState(5);
@@ -92,7 +93,12 @@ const App = () => {
           speed={speed}
           steps={steps}
           direction={direction}
+          onClick={(e) => {
+            e.preventDefault();
+            setModalOpen(!modalOpen);
+          }}
         />
+        <Inventory modalOpen={modalOpen} setModalOpen={setModalOpen} />
         <TextBox>{description}</TextBox>
       </Scene>
     </div>
