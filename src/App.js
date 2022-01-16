@@ -1,9 +1,21 @@
 import React, { useState } from "react";
 import styled, { keyframes } from "styled-components";
-import "./App.css";
-import { sceneArr } from "./scenes/scene";
+import { Modal } from "react-bootstrap";
+import { sceneArr } from "./assets/collisionArrays/casinoEntrance";
 
 const App = () => {
+  const [showInv, setShowInv] = useState(false);
+  const [playerData, setPlayerData] = useState({
+    xPosition: 32,
+    yPosition: 5,
+    xDestination: 0,
+    yDestination: 0,
+    speed: 0.6,
+    steps: 20,
+    direction: "right",
+    tile: 1,
+    walk: false,
+  });
   const [collision, setCollision] = useState(sceneArr);
   const [xPosition, setXPosition] = useState(32);
   const [yPosition, setYPosition] = useState(5);
@@ -157,6 +169,7 @@ const Character = styled.div`
 
 const TextBox = styled.p`
   position: absolute;
+  font-size: 2vw;
   width: 100%;
   text-align: center;
   color: white;

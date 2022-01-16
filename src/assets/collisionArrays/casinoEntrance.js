@@ -1,4 +1,4 @@
-export const sceneArr = [
+export default casinoEntrance = [
   {
     tile: 1,
     description: "Nothing there",
