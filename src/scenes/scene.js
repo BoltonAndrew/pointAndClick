@@ -508,7 +508,7 @@ export const sceneArr = [
     description: "It's a newspaper",
     item: true,
     move: true,
-    imageUrl: "./assets/newspaper.png",
+    imageUrl: "./assets/newspaper.svg",
     xLocation: 32,
     yLocation: 55,
   },

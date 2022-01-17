@@ -10,6 +10,13 @@ export const Inventory = ({
 }) => {
   const [contents, setContents] = useState([]);
 
+  const inventoryHandler = (item, i) => {
+    setHeldItem(item);
+    const tempArr = contents;
+    tempArr.splice(i, 1);
+    setContents(tempArr);
+  };
+
   const itemHandler = (e) => {
     e.preventDefault();
     if (heldItem) {
@@ -19,18 +26,22 @@ export const Inventory = ({
   };
 
   return (
-    <InventoryBag show={modalOpen} heldItem={heldItem}>
+    <InventoryBag show={modalOpen} helditem={heldItem}>
       <Modal.Dialog>
         <Modal.Header>
           <CloseInvBttn onClick={() => setModalOpen(false)}>X</CloseInvBttn>
           <Modal.Title>Inventory</Modal.Title>
         </Modal.Header>
-        <Modal.Body onClick={itemHandler}>
-          {contents.length > 0 ? (
-            contents.map((item, i) => <ItemImage key={i} src={item} />)
-          ) : (
-            <p>+</p>
-          )}
+        <Modal.Body>
+          {contents.length > 0 &&
+            contents.map((item, i) => (
+              <ItemImage
+                key={i}
+                src={item}
+                onClick={() => inventoryHandler(item, i)}
+              />
+            ))}
+          <p onClick={itemHandler}>+</p>
         </Modal.Body>
       </Modal.Dialog>
     </InventoryBag>
@@ -48,8 +59,7 @@ const InventoryBag = styled(Modal)`
   height: 20vw;
   top: 20vw;
   left: 40vw;
-  cursor: url(${(props) => (props.heldItem ? "./assets/newspaper.svg" : null)}),
-    auto;
+  cursor: url(${(props) => (props.helditem ? props.helditem : null)}), auto;
 `;
 
 const CloseInvBttn = styled.button`

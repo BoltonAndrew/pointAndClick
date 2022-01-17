@@ -130,8 +130,7 @@ const Scene = styled.div`
   background-size: cover;
   width: 100vw;
   height: 50vw;
-  cursor: url(${(props) => (props.heldItem ? "./assets/newspaper.svg" : null)}),
-    auto;
+  cursor: url(${(props) => (props.heldItem ? props.heldItem : null)}), auto;
 `;
 
 const Box = styled.div`
