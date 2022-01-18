@@ -1,6 +1,6 @@
 # Point and Click Adventure MVP
 
-Currently hosted at https://priceless-khorana-5b346e.netlify.app/
+Currently hosted at https://andys-point-and-click.netlify.app/
 
 Double click will give you information about what you have clicked on (With some high quality voice acting on the newspaper :D)
 Right Click will move to a location.
